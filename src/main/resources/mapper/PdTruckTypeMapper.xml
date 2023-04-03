@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pd.backend.mapper.PdTruckTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.pd.backend.entity.PdTruckType">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="allowableLoad" column="allowable_load" jdbcType="DECIMAL"/>
+            <result property="allowableVolume" column="allowable_volume" jdbcType="DECIMAL"/>
+            <result property="measureLong" column="measure_long" jdbcType="DECIMAL"/>
+            <result property="measureWidth" column="measure_width" jdbcType="DECIMAL"/>
+            <result property="measureHigh" column="measure_high" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,allowable_load,
+        allowable_volume,measure_long,measure_width,
+        measure_high,status
+    </sql>
+    <select id="selectByTruckId" resultType="com.pd.backend.entity.PdTruckType">
+        select <include refid="Base_Column_List"/>
+        from pd_truck_type
+        where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+        #{id}
+        </foreach>
+
+    </select>
+</mapper>

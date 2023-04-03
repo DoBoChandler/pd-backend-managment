@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pd.backend.mapper.PdOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.pd.backend.entity.PdOrder">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="orderType" column="order_type" jdbcType="TINYINT"/>
+            <result property="pickupType" column="pickup_type" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="memberId" column="member_id" jdbcType="VARCHAR"/>
+            <result property="receiverProvinceId" column="receiver_province_id" jdbcType="VARCHAR"/>
+            <result property="receiverCityId" column="receiver_city_id" jdbcType="VARCHAR"/>
+            <result property="receiverCountyId" column="receiver_county_id" jdbcType="VARCHAR"/>
+            <result property="receiverAddress" column="receiver_address" jdbcType="VARCHAR"/>
+            <result property="receiverAddressId" column="receiver_address_id" jdbcType="VARCHAR"/>
+            <result property="receiverName" column="receiver_name" jdbcType="VARCHAR"/>
+            <result property="receiverPhone" column="receiver_phone" jdbcType="VARCHAR"/>
+            <result property="senderProvinceId" column="sender_province_id" jdbcType="VARCHAR"/>
+            <result property="senderCityId" column="sender_city_id" jdbcType="VARCHAR"/>
+            <result property="senderCountyId" column="sender_county_id" jdbcType="VARCHAR"/>
+            <result property="senderAddress" column="sender_address" jdbcType="VARCHAR"/>
+            <result property="senderAddressId" column="sender_address_id" jdbcType="VARCHAR"/>
+            <result property="senderName" column="sender_name" jdbcType="VARCHAR"/>
+            <result property="senderPhone" column="sender_phone" jdbcType="VARCHAR"/>
+            <result property="currentAgencyId" column="current_agency_id" jdbcType="VARCHAR"/>
+            <result property="paymentMethod" column="payment_method" jdbcType="TINYINT"/>
+            <result property="paymentStatus" column="payment_status" jdbcType="TINYINT"/>
+            <result property="amount" column="amount" jdbcType="DECIMAL"/>
+            <result property="estimatedArrivalTime" column="estimated_arrival_time" jdbcType="TIMESTAMP"/>
+            <result property="distance" column="distance" jdbcType="DECIMAL"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,order_type,pickup_type,
+        create_time,member_id,receiver_province_id,
+        receiver_city_id,receiver_county_id,receiver_address,
+        receiver_address_id,receiver_name,receiver_phone,
+        sender_province_id,sender_city_id,sender_county_id,
+        sender_address,sender_address_id,sender_name,
+        sender_phone,current_agency_id,payment_method,
+        payment_status,amount,estimated_arrival_time,
+        distance,status
+    </sql>
+    <select id="selectAllOrder" resultType="com.pd.backend.entity.PdOrder">
+        select <include refid="Base_Column_List"/> from pd_order
+    </select>
+    <select id="selectProvinceById" resultType="com.pd.backend.entity.orderdto.ProvinceDto">
+        select id,name,lng,lat from pd_area where id=#{id}
+    </select>
+    <select id="selectByOrderId" resultType="com.pd.backend.entity.PdOrder">
+        select <include refid="Base_Column_List"/> from pd_order where id=#{id}
+    </select>
+</mapper>

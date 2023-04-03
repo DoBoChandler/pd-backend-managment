@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pd.backend.mapper.PdGoodsTypeMapper">
+
+    <resultMap id="BaseResultMap" type="com.pd.backend.entity.PdGoodsType">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="defaultWeight" column="default_weight" jdbcType="DECIMAL"/>
+            <result property="defaultVolume" column="default_volume" jdbcType="DECIMAL"/>
+            <result property="remark" column="remark" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,default_weight,
+        default_volume,remark,status
+    </sql>
+    <insert id="add">
+        insert into pd_goods_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                id,
+            </if>
+            <if test="name != null and name !=''">
+                name,
+            </if>
+            <if test="defaultWeight != null and defaultWeight != ''">
+                default_weight,
+            </if>
+            <if test="defaultVolume != null and defaultVolume != ''">
+                default_volume,
+            </if>
+            <if test="remark != null and remark != ''">
+                remark
+            </if>
+        </trim>
+        values
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id !=''">
+                #{id},
+            </if>
+            <if test="name != null and name !=''">
+                #{name},
+            </if>
+            <if test="defaultWeight != null and defaultWeight != ''">
+                #{defaultWeight},
+            </if>
+            <if test="defaultVolume != null and defaultVolume != ''">
+                #{defaultVolume},
+            </if>
+            <if test="remark != null and remark != ''">
+               #{remark}
+            </if>
+            </trim>
+    </insert>
+    <update id="updateByGoodsId">
+        UPDATE pd_goods_type
+        <set>
+        <if test="name != null and name !=''">
+            name = #{name},
+        </if>
+        <if test="defaultWeight != null and defaultWeight != ''">
+            default_weight = #{defaultWeight},
+        </if>
+        <if test="defaultVolume != null and defaultVolume != ''">
+            default_volume = #{defaultVolume},
+        </if>
+        <if test="remark != null and remark != ''">
+            remark = #{remark},
+        </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="delete">
+        update pd_goods_type set status=0 where id=#{goodsId}
+    </update>
+    <select id="selectAll" resultType="com.pd.backend.entity.PdGoodsType">
+        select <include refid="Base_Column_List"/> from pd_goods_type
+        <where>
+               status = 1
+            <if test="name!=null and name !=''">
+               and name LIKE CONCAT('%',#{name},'%')
+            </if>
+            <if test="truckTypeId!=null and truckTypeId !=''">
+               and id in(select goods_type_id  from pd_truck_type_goods_type where truck_type_id=#{truckTypeId})
+            </if>
+        </where>
+
+    </select>
+    <select id="selectByGoodsId" resultType="com.pd.backend.entity.PdGoodsType">
+        select <include refid="Base_Column_List"/> from pd_goods_type where id=#{goodsId}
+    </select>
+</mapper>
